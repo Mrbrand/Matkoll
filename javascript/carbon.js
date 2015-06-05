@@ -34,7 +34,7 @@ var itemList = {
 	
 	cleardata : function() {   
 		this.itemArray = [];
-		localStorage.removeItem('memory');
+		localStorage.removeItem('matkoll');
 		this.add_item({id:100000, title:"Some memories", category:"Nöje", importance:3, notes: "Tjolahopp", year:2010, month:3, day: 19});
 	},
 	
@@ -128,7 +128,7 @@ var itemList = {
 
 	add_item : function(item){
 		this.itemArray.push(item);
-		window.localStorage.setItem("memory", JSON.stringify(this.itemArray));
+		window.localStorage.setItem("matkoll", JSON.stringify(this.itemArray));
 	},
 	
 
@@ -178,7 +178,7 @@ var itemList = {
 				break;
 				}
 		}
-		window.localStorage.setItem("memory", JSON.stringify(this.itemArray));
+		window.localStorage.setItem("matkoll", JSON.stringify(this.itemArray));
 	},
 	
 	
@@ -189,7 +189,7 @@ var itemList = {
 				break;
 				}
 		}
-		window.localStorage.setItem("memory", JSON.stringify(this.itemArray));
+		window.localStorage.setItem("matkoll", JSON.stringify(this.itemArray));
 	},
 	
 	
