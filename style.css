@@ -1,4 +1,4 @@
-body {margin:0;  font-family:Verdana,Tahoma;background:#3E360A;}
+body {margin:0;  font-family:Verdana,Tahoma;background:#FFFFCC;}
 .page {width:100%;    top:0px;   display:none;}
 
 #new{min-height:1000px;}
@@ -7,14 +7,20 @@ body {margin:0;  font-family:Verdana,Tahoma;background:#3E360A;}
 /****** HEADER **************************************************************/
 /****************************************************************************/
 
-    #header{
+#export-table td{border: 1px solid gray;  color: white;}
+
+    .header{
       padding:5px;
-      background:#345;
+      background:#7A7;
       margin:0;
-      height:45px;
+      height:35px;
       font-size: 12pt;
-      color: #FFF;
+      color: #333;
       display: block;
+    }
+    
+    #meals .header{
+      background:#FC4;
     }
     
     .menu-title {margin-left:5px; width:240px; display:block; float:left; text-overflow:ellipsis; white-space:nowrap;overflow: hidden; font-size: 20px; text-shadow:1px 1px 1px #123;}
@@ -23,7 +29,7 @@ body {margin:0;  font-family:Verdana,Tahoma;background:#3E360A;}
 	 .cancel-button {float:left;}
 	 .add-button{float:right;}
 	 
-    .submenu{background:#345;padding:5px; height:36px;}
+    .submenu{background: linear-gradient(#677, #344);padding:15px 5px; height:30px;}
     .search{border-radius:3px;width:150px;}
 	 .type-filter {border-radius:3px;width:45%;}
 	 
@@ -77,33 +83,27 @@ button:active {
 .empty{background:#535069; margin-top:100px;color:gray; text-align: center;}
 
 .subitem{
-  font-size: 10pt;
-  padding-bottom: 3px;
-}
-
-.document{ 
-    background:url('img/itembg.png') center repeat-x;
-    background-size: auto 100%;
-    min-height:57px;
+    font-size: 10pt;
+    padding-bottom: 3px;
+    background: -webkit-linear-gradient(#FFF, #CCC);
     color: #333;
-}
-
-.project{ 
-    background:url('img/project-bg.png') center repeat-x;
     background-size: auto 100%;
     min-height:70px;
-    color: white;
 }
 
-.subitem-center{    width:auto;    padding-top:3px;     padding-left:3px;     overflow:hidden;    cursor:pointer;   min-height:60px;}
-.subitem-left{ height:100%;   width:45px;    float:left;    cursor:pointer;}
 
-.title{overflow: hidden;    font-weight:bold;    height: 17px;    float:left;    display: block;    width:100%;}
+
+.subitem-center{    width:auto;    padding-top:3px;     padding-left:7px;     overflow:hidden;    cursor:pointer;   min-height:60px;}
+.subitem-left{ height:100%;  min-height: 60px;   width:45px;    float:left;    cursor:pointer;    padding:2px;}
+
+.title{  font-weight:bold;   float:left;    display: block;    width:100%; color: #333; font-size:14pt; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3); margin-bottom:3px;}
 .notes {display: block;    font: italic 10px Arial;    color: #999;    max-height:100px;    margin-right:5px;   white-space: pre-line; }
 .subitem-next-action{color:#484; float: left;  display: block;  height: 17px; overflow: hidden; width:200px; text-overflow:ellipsis; white-space:nowrap;}
 .subitem-notes {float: left;  display: block;  font-size: 8pt;  height: 15px; overflow: hidden; width:200px; text-overflow:ellipsis; white-space:nowrap;}
 /*.notes {display: block; font: italic 10px Arial; color: #999; height: 12px; overflow: hidden; width:300px; text-overflow:ellipsis; white-space:nowrap;}*/
  .date{font-size:9px;color:#FF6;}
+ 
+ #meals .title{color: #FFF;}
  
 .next_action {font-size:10px;  color: #399;  height: 12px; overflow: hidden;}  
 .task_notes {font-size: 8pt;  color: #999;  height: 15px; overflow: hidden;}  
@@ -117,7 +117,13 @@ button:active {
 
 
 /****** FORM FIELDS *******/
-textarea {width:100%;  border:0; padding:5px; margin:0; font-size:12pt; color:#555; margin-bottom:2px; font-family:Verdana,Tahoma;box-sizing: border-box;}
+textarea {width:100%;  border:0; padding:5px; margin:0; font-size:12pt; color:#555; margin-bottom:2px; font-family:Verdana,Tahoma;box-sizing: border-box; border: 1px solid gray;}
 select {  width:100%;  border: 0;  padding:5px;  margin:0;  font-size: 12pt;  color: #555;  margin-bottom: 3px;box-sizing: border-box;}
 input {  width:100%;  margin:0;  font-size: 12pt;  height: 30px;  margin-bottom: 3px;box-sizing: border-box;}
 .btn {  width:100%;  margin:0;  font-size: 12pt;  height: 30px;  margin-bottom: 3px;box-sizing: border-box;}
+
+.finished{
+    background: -webkit-linear-gradient(#99A, #778);
+}
+
+

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Matkoll</title> 
+		<title>Mangajo</title> 
 		
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta content="minimum-scale=1.0, width=device-width, maximum-scale=0.6667, user-scalable=no" name="viewport" />
@@ -9,67 +9,107 @@
 		<meta content="yes" name="apple-mobile-web-app-capable" />
 		<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type" />
 		<link rel="apple-touch-icon" href="img/icon.png"/>
+        <link rel="icon" type="image/png" href="http://betarabbit.com/mangajo/img/bread-16.ico">
 		
 		<link rel="stylesheet" type="text/css" href="style.css"/>
-		<link rel="stylesheet" type="text/css" href="carbon.css"/>
 		
 		<script language="JavaScript" type="text/javascript" src="javascript/moment.min.js"></script>
 		<script language="JavaScript" type="text/javascript" src="javascript/mustache.js"></script>	
-		<script language="JavaScript" type="text/javascript" src="javascript/carbon.js"></script>
+		<script language="JavaScript" type="text/javascript" src="carbon.js"></script>
+        <script language="JavaScript" type="text/javascript" src="javascript/array_query.js"></script>
 		<script language="JavaScript" type="text/javascript" src="javascript/jquery-2.1.3.min.js"></script> 
 		<script language="JavaScript" type="text/javascript" src="javascript/jquery.detect_swipe.js"></script> 
-		<script language="JavaScript" type="text/javascript" src="javascript/tinysort.js"></script>
-		
+        <script src="http://rubaxa.github.io/Sortable/Sortable.js?1"></script>
+        
 	</head>
 	
 	<body>
 	
 		
-		<!--SEARCH PAGE -------------->
+		<!--GROCERIES PAGE-------------->
 			<div id="search" class="page" style="display:block;">
 			  
-			<div id="header">
-				<button class="menu-button" style="float:left;">Menu</button>
-				<button class="new-button">New</button>
+			<div class="header" style="font: 29px bold arial, sans-serif;">
+				
+                <img id="meals-button" src="img/food.png"  style="float:right; margin:5px; cursor:pointer;"/>
+				
 			</div> <!--end header-->
 			
 			<!--Sub-meny-->
 			<div class="submenu">
 				
-				<!--Search input-->
-				<input class="search" onkeyup="view_filter();" placeholder="Search string" style="width:45%;"/>
+                <!--button id="extra-controls-button" onclick="$('.extra-controls').toggle();" style="float:left;  margin-left:10px;">...</button-->
+                <!img  src="img/icon.png"  style="margin:5px;vertical-align: text-top; height:30px;"/>
+                
+                <! New button>
+				<button id="quick_add" style="float:right;margin-left:10px;">Add</button>
+    			
+                <!--Search input-->
+                <input id="quick_search" onkeyup="refresh_groceries();" placeholder="Search/quick add" style="float:right;width:200px;border-radius:3px;"/>
 				
-				<!--Select type-->
-				<select class="type-filter" onchange="view_filter();">
-					<option value="all">-ALL-</option>
-		         <option value="Primärt">Primärt</option>
-		         <option value="Personligt">Personligt</option>
-		         <option value="Socialt">Socialt</option>
-		         <option value="Jobb/ Studier">Jobb/ Studier</option>
-		         <option value="Familj">Familj</option>
-		         <option value="Hälsa">Hälsa</option>
-		         <option value="Webb">Webb</option>
-		         <option value="Nöje">Nöje</option>
-		          <option value="Engagemang">Engagemang</option>
-		          <option value="Boende">Boende</option>
-				</select>
-				
-				
+               
 			</div><!-- end controls-->
+            
+            <div class="extra-controls" style="display:none;">
+        		extra controls
+			</div><!-- end controls--> 
 			
 			<!-- ItemLista -->
-			<div id="items">
-				<div id="filtered"></div>
-			</div><!-- end items--> 
+			<div id="open_items"></div>
+            <!--div style="margin:10px; color:#555;">Finished</div-->
+            
+            <div id="finished_items"></div>
+            
+	
+		</div><!-- end page-->
+		
+        
+        
+        
+    
+        
+        <!--MEALS PAGE -------------->
+			<div id="meals" class="page" style="display:none;">
+			  
+			<div class="header" style="font: 29px bold arial, sans-serif;">
+				
+                <img id="groceries-button" src="img/groceries2.png"  style="float:right; margin:5px; cursor:pointer;"/>
+				
+			</div> <!--end header-->
 			
+			<!--Sub-meny-->
+			<div class="submenu">
+				
+                <!--button id="extra-controls-button" onclick="$('.extra-controls').toggle();" style="float:left;  margin-left:10px;">...</button-->
+                <!img  src="img/icon.png"  style="margin:5px;vertical-align: text-top; height:30px;"/>
+                
+                <! New button>
+				<button id="new-button" style="float:right;margin-left:10px;">New</button>
+    			
+                <!--Search input-->
+                <!input id="quick_search" onkeyup="//refresh_meals();" placeholder="Search/quick add" style="float:right;width:200px;border-radius:3px;"/>
+				
+			</div><!-- end controls-->
+            
+            <div class="extra-controls" style="display:none;">
+        		extra controls
+			</div><!-- end controls--> 
+			
+			<!-- ItemLista -->
+			<div id="meal_items"  class="list-group"></div>
+            <!--div style="margin:10px; color:#555;">Finished</div-->
+         
+	
 		</div><!-- end page-->
 		
 		
-		
-		<!-- EDIT item ---------------------------------------------------------------------->
-		<div id="edit" class="page">
+
+        
+        
+		<!-- EDIT GROCERIES ---------------------------------------------------------------------->
+		<div id="edit" class="page"  style="display:none;">
 			
-			<div id="header">
+			<div class="header">
 				<div class="menu-title">-item-title-</div>
 			</div> <!--end header-->
 			
@@ -80,156 +120,140 @@
 				<button class="delete-button" style="width:70px; float:right;margin-left:5px;"><img src="img/delete2.png" /></button>
 				<br/><br/>
 			</div><!-- end controls--> 
-			
-			<form id="edit-item-form">
-				<input class="item-title" name="title" type="text" style="margin-bottom:5px;height:50px; font-size:1.3em"/><br/>
-
-			  	<input class="year" name="year" type="text" style="width:40px;margin-bottom:5px;float:left;"/>
-			  	<input class="month" name="month" type="text" style="width:40px;margin-bottom:5px;float:left;"/>
-			  	<input class="day" name="day" type="text" style="width:40px;margin-bottom:5px;float:left;"/>
-				
-		     <select class="category" name="category" style="margin-bottom:5px;height:40px;">
-		         <option value="">--Kategori--</option>
-		         
-		         <option value="Primärt">Primärt</option>
-		         <option value="Personligt">Personligt</option>
-		         <option value="Socialt">Socialt</option>
-		         <option value="Jobb/ Studier">Jobb/ Studier</option>
-		         <option value="Familj">Familj</option>
-		         <option value="Hälsa">Hälsa</option>
-		         <option value="Webb">Webb</option>
-		         <option value="Nöje">Nöje</option>
-		          <option value="Engagemang">Engagemang</option>
-		          <option value="Boende">Boende</option>
-		     </select><br/>
-				
-				<select class="importance" name="importance" style="margin-bottom:5px;height:40px;">
-					<option value="0">--Set importance--</option>
-		         <option value="5">5-Milstolpe</option>
-		         <option value="4">4-Event</option>
-		         <option value="3">3-Händelse</option>
-		         <option value="2">2-Företeelse</option>
-		         <option value="1">1-Anteckning</option>
-				</select><br/>
-				
-				<textarea class="item-notes" name="notes" rows="20" placeholder="Notes"></textarea>
-			
-				<center>
-					<button class="more-button" type='button'>More options</button>
-				</center>
-				<div class="more" style="display:none;">
-					<span class="field-description">id:</span>
-					<input class="item-id" name="id" type="text" readonly="readonly" style="color:#CCC;"/> <br/>
-				</div>
-				
+            
+			<form id="edit-groceries-form">
+    				<input class="item-title" name="title" type="text" style="margin-bottom:5px;height:50px; font-size:1.3em"/><br/>
+                    <input class="item-refill-time" name="refill" type="text" style="margin-bottom:5px;height:50px; font-size:1.3em"/><br/>
+    			    <textarea class="item-notes" name="notes" rows="4" placeholder="Notes"></textarea>
+            
+    			<center>
+    				<button class="more-button" type='button'>More options</button>
+    			</center>
+    			<div class="more" style="display:none;">
+    				<span class="field-description">id:</span>
+    				<input class="item-id" name="id" type="text" style="color:#CCC;"/> <br/>
+        	        <span class="field-description">Status:</span>
+                    <input class="status" type="text" name="status" />
+                    <span class="field-description">Start Date:</span>
+                    <input class="start_date" type="text" name="start_date" />
+                    <span class="field-description">Finish Date:</span>
+                    <input class="finish_date_input" type="text" name="finish_date" />
+                    <span class="field-description">Type:</span>
+                    <input class="type_input" type="text" name="type" />
+                </div>
+            
 			</form>
-		</div><!--edit-item--> 
-
-		<!-- NEW item--------------------------------------------------------------------------->
-		<div id="new" class="page">
+		</div><!--edit-item-->
+        
+        
+        
+        
+        <!-- EDIT MEAL ---------------------------------------------------------------------->
+		<div id="edit-meal" class="page"  style="display:none;">
 			
-			<div id="header">
-				<div class="menu-title">-new item-</div>
+			<div class="header">
+				<div class="menu-title">-item-title-</div>
 			</div> <!--end header-->
 			
 			<!--Sub-meny-->
 			<div class="submenu">
 				<button class="cancel-button">Cancel</button>
-				<button class="add-button">Add</button>
+				<button class="save-button" style="width:70px; float:right;margin-left:5px;"><img src="img/save.png" /></button>
+				<button class="delete-button" style="width:70px; float:right;margin-left:5px;"><img src="img/delete2.png" /></button>
+				<br/><br/>
+			</div><!-- end controls--> 
+            
+			<form id="edit-meal-form">
+				<input class="item-title" name="title" type="text" style="margin-bottom:5px;height:50px; font-size:1.3em"/><br/>
+                <input class="item-prio" name="prio" type="text" style="margin-bottom:5px;height:50px; font-size:1.3em"/><br/>
+			    <textarea class="item-notes" name="notes" rows="4" placeholder="Notes"></textarea>
+        
+    			<center>
+    				<button class="more-button" type='button'>More options</button>
+    			</center>
+    			
+                <div class="more" style="display:none;">
+    				<span class="field-description">id:</span>
+    				<input class="item-id" name="id" type="text" readonly="readonly" style="color:#CCC;"/> <br/>
+        	        <span class="field-description">Status:</span>
+                    <input class="status" type="text" name="status" />
+                    <span class="field-description">Start Date:</span>
+                    <input class="start_date" type="text" name="start_date" />
+                    <span class="field-description">Finish Date:</span>
+                    <input class="finish_date_input" type="text" name="finish_date" />
+                    <span class="field-description">Type:</span>
+                    <input class="type_input" type="text" name="type" />
+                    <span class="field-description">Order:</span>
+                    <input class="order_input" type="order" name="type" />
+                </div>
+            
+			</form>
+		</div><!--edit-item-->
+        
+        
+            <!-- NEW item--------------------------------------------------------------------------->
+		<div id="new" class="page"  style="display:none;">
+			
+			<div class="header">
+    			<div class="menu-title">-New item-</div>
+			</div> <!--end header-->
+			
+			<!--Sub-meny-->
+			<div class="submenu">
+    			<button class="cancel-button">Cancel</button>
+				<!--button class="save-button" style="width:70px; float:right;margin-left:5px;"><img src="img/save.png" /></button-->
+				<button class="add-button" style="width:70px; float:right;margin-left:5px;">Add</button>
+				<br/><br/>
 			</div><!-- end controls--> 
 			
 			
-
-			<form id="new-item-form">
-				<textarea  id="new-item-title" name="title" placeholder="Title" rows="1" style="margin-bottom:5px;height:50px; font-size:1.3em; padding-top: 11px;"></textarea><br/>
-				
-			  	<input class="year" name="year" type="text" style="width:40px;margin-bottom:5px;float:left;"/>
-			  	<input class="month" name="month" type="text" style="width:40px;margin-bottom:5px;float:left;"/>
-			  	<input class="day" name="day" type="text" style="width:40px;margin-bottom:5px;float:left;"/>
-				
-		     <select class="category" name="category" style="margin-bottom:5px;height:40px;">
-		         <option value="">--Kategori--</option>
-		         <option value="Jobb/ Studier">Jobb/ Studier</option>
-		         <option value="Primärt">Primärt</option>
-		         <option value="Personligt">Personligt</option>
-		         <option value="Socialt">Socialt</option>
-		         <option value="Familj">Familj</option>
-		         <option value="Hälsa">Hälsa</option>
-		         <option value="Webb">Webb</option>
-		         <option value="Nöje">Nöje</option>
-		         <option value="Engagemang">Engagemang</option>
-		         <option value="Boende">Boende</option>
-		     </select><br/>
-				
-				<select class="importance" name="importance" style="margin-bottom:5px;height:40px;">
-					<option value="0">--Set importance--</option>
-		         <option value="5">5-Milstolpe</option>
-		         <option value="4">4-Event</option>
-		         <option value="3">3-Händelse</option>
-		         <option value="2">2-Företeelse</option>
-		         <option value="1">1-Anteckning</option>
-				</select><br/>
-				
-				<textarea class="new-item-notes" name="notes" rows="20" placeholder="Notes"></textarea>
 			
+			<form id="new-item-form">
+				<textarea  id="new-item-title" name="title" placeholder="Title" rows="1" autofocus style="margin-bottom:5px;height:50px; font-size:1.3em; padding-top: 11px;"></textarea><br/>
 				
+			    <!input id="new-item-date" type="date" name="date" min="1979-11-17" max="2025-12-31" />
+    			<!input type="text" name="order" id="new-order" />
+                <input type="text" name="prio" class="new-prio" placeholder="Prio"/>
+				<textarea id="new-item-notes" name="notes" placeholder="Notes" rows="10"></textarea>
+                
+                <!--hidden-->
+                <input type="hidden" name="type" value="meal"/>				
 			</form>
 			<br/><br/><br/><br/><br/><br/><br/>
 		</div><!-- end new-item--> 
-	
+        
+        
+        
 	</body>
 </html>
 
-
-
-<!MENU >
-		<div id="menu" class="page">
-			
-			<div id="header">
-				<div class="menu-title">MENU</div>
-				<button class="cancel-button">Back</button>
-			</div> <end header-->
-			<!--button onclick="window.open('mailto:test@example.com?subject=WiseGuy backup&body='+JSON.stringify(itemList.itemArray));">Mail backup</button-->
-			
-			<!--textarea class="json-input" rows="5" placeholder="JSON"></textarea>
-			<button onclick="myString = $('.json-input').val().replace('/[\r\n]/g', '<br />'); itemList.itemArray = JSON.parse(myString);">Till local</button><br/-->
-			<br/><br/>
-			<!--button onclick="itemList.cleardata();">Reset data</button><br/><br/-->
-			LOCAL STORAGE<br/><br/>
-			
-			Memory: <span id="memory"></span><br/>
-			<button  onclick="$('#output').val(window.localStorage.getItem('memory'));">Backup Memory</button><br/><br/>
-			
-			Wiseguy: <span id="key"></span><br/>
-			<button onclick="$('#output').val(window.localStorage.getItem('key'));">Backup WiseGuy</button><br/><br/>
-			
-			<form action="http://betarabbit.com/resurs/mail/mail.php" method="post">
-				<textarea id="output" name="content" ></textarea>
-				<input type="submit"  value="Ok"/>
-			</form>				
-			
-		
-		</div><!-- end menu--> 
-	</body>
-</html>
-
-<!-- Mustache template search -->
-<script id="filtered_items_template" type="text/template">
+<!-- Mustache template open -->
+<script id="open_items_template" type="text/template">
 	<div class="subitem project">
 						
-		<div class="subitem-left quick_edit_item">
-			<img class="prio-icon" src="img/prio5.png"/>
-			<!img class="type-icon" style="margin:4px 7px;" src="img/type{{type}}.png"/>
-			<div class="category" style="">{{category}}</div>
-			<img class="type-icon" style="margin:0;" src="img/size{{importance}}.png"/>
+		<div class="subitem-right" style="width:30px; float: right;  height:40px; padding:15px 20px 10px 20px;;">
+        	<img src="../wiseguy/img/handle3.png"/>
 		</div>
+        
+        <!--div class="subitem-left quick_edit_item">
+			<!img class="prio-icon" src="img/prio{{prio}}.png"/>
+			<!img class="type-icon" style="margin:4px 7px;" src="img/type{{type}}.png"/>
+			<!--div class="percent" style="background:{{status}}; color:grey;">{{percent}} %</div-->
+            <!--div class="category" style="">{{category}}</div-->
+            <!--span class="saldo" style="font-size: 8pt;">{{saldo}} {{unit}}</span><br/>
+			<!--img class="type-icon" style="margin:0;" src="img/size{{importance}}.png"/-->
+		</div-->
 		
 		<div class="subitem-center">
-			<div class="title" style="">{{title}}</div>
+			<div class="title">{{title}}</div>
 			<div class="next_action_div" style="float:left;">
-			<span class="date">{{week_day}} {{day}} {{month_name}} {{year}}</span><br/>
 				{{#notes}}<span class="notes">{{notes}}</span>{{/notes}}
 			</div>
+            <button id="purchase" style="float:right;margin-right:5px;width:70px; "><img src="img/finish.gif"></button>
+            
+            <button id="increase" style="float:right;margin-right:5px;">+</button>
+            <div style="float:right; padding:3px; font-size:15pt;">{{amount}}</div>
+            <button id="decrease" style="float:right;margin-right:5px;">-</button>
 		</div><!-- end subitem-center -->
 		 
 		<div style="clear:both;"></div>
@@ -237,205 +261,80 @@
 		<span class="item_id" style="display:none;">{{id}}</span>
 		<span class="importance" style="display:none;">{{importance}}</span>
 		
-		<span class="year" style="display:none;">{{year}}</span>
-		<span class="month" style="display:none;">{{month}}</span>
-		<span class="day" style="display:none;">{{day}}</span>
-		
 		
 	</div>
+    
 </script>	
 	
-	
-<!-- Navigerings script -->	
-<script>
-	
-	// Uppstart
-	//var current = {id:0, parent_id:0, title:"Alla"};
-	var view = "search";
-	var latest_swipe;
-	itemList.init("matkoll");
-	if (itemList.itemArray==undefined) itemList.exampledata();
-	itemList.filtered("all","");
-	view_filter();
-                
-
-	// .subitem-left (visa edit-läge)
-	$(document).on('click', ".subitem", function() {
+<!-- Mustache template finished -->
+<script id="finished_items_template" type="text/template">
+    <div class="subitem project finished">
+						
+		<!--div class="subitem-left quick_edit_item ">
+			<div style="font-size: 20px; color:#DDA;text-align: center;"> {{days_ago}}</div>
+            <div style="font-size: 8px; color:#AAA;text-align: center;">days ago</div>
+		</div-->
 		
-		var id = $(this).find(".item_id").text();
-		edit_item = itemList.get_item(id);
-    
-		$(".menu-title").html("Edit: "+edit_item.title);
+		<div class="subitem-center">
+			<div class="title"  style="color:#DDD;">{{title}}</div>
+			<div class="next_action_div" style="float:left;">
+    			<span style="font-size: 12px; color:#DDA;text-align: center;"> {{days_ago}}</span>
+                <span style="font-size: 12px; color:#AAA;">days ago</span>
+			</div>
+            <button id="tolist" style="float:right;margin-right:5px;width:70px; "><img src="img/cart.png" /></button>
+
+		</div><!-- end subitem-center -->
+		 
+		<div style="clear:both;"></div>
 		
-     	$("input.item-id").val(id);
-     	$("input.item-title").val(edit_item.title);
-     	$("textarea.item-notes").val(edit_item.notes);
-		$(".year").val(edit_item.year);
-     	$(".month").val(edit_item.month);
-     	$(".day").val(edit_item.day);
- 		$(".importance").val(edit_item.importance);
-		$(".category").val(edit_item.category);
-			/*$("input.item-category").val(current.category);
-        $("input.item-create-date").val(current.date_create);
-        $("input.item-finish-date").val(current.date_finished);*/
-				
-		$(".page").hide();
-		$("#edit").show();
+		<span class="item_id" style="display:none;">{{id}}</span>
+		<span class="importance" style="display:none;">{{importance}}</span>
 		
-		$('.more').hide();
-		$('.more-button').show();
-    });
+	</div>
     
-	
-	// .subitem-center (visa subitems)
-	/*$(document).on('click', ".subitem-center", function() {
-		var current_id = $(this).parent().find(".item_id").text();
-		view_item (current_id);
-    });*/
-    
-    
-    
-	// .new-button
-	$(document).on('click', ".new-button", function() {
- 		var today = new Date();
- 		var day = today.getDate();
-      var month = today.getMonth()+1; //January is 0!
-      var year = today.getFullYear();
-      $(".year").val(year);
-      $(".month").val(month);
-      $(".day").val(day);
+</script>	
+
+
+
+
+<script id="meals_items_template" type="text/template">
+    <div class="subitem meal">
+    					
+		 <div class="subitem-right" style="width:30px; float: right;  height:40px; padding:15px 20px 10px 20px;;">
+        	<img src="../wiseguy/img/handle3.png"/>
+		</div>
         
-		$(".menu-title").html("New: ");
-      $("#new-item-title").val("");
-      $(".new-item-notes").val("");
-      $(".category").val("");
-      $(".importance").val("1");
-      
-  	
-		$(".page").hide();
-		$("#new").show();
-    });
-	
-	// .add-button
-	$(document).on('click', ".add-button", function() {
-      itemList.add_from_form("#new-item-form");
-		view_filter();
-    });
-	
-	
-	// .save-button
-	$(document).on('click', ".save-button", function() {
-      itemList.edit_from_form("#edit-item-form");
-		if(view=="tree")	view_item(current.id);
-		else view_filter();
-    });
-	
-	
-	// .more-button
-	$(document).on('click', ".more-button", function() {
-		$('.more').show();
-		$('.more-button').hide();
-    });
-	
-	// .back-button
-    $(document).on('click', ".back-button", function() {
-		view_item(current.parent_id);
-    });
-
-	//swipe back
-	$("#tree").on('swiperight',  function(){ 
-		if(current.parent_id!=-1)
-			view_item(current.parent_id);
-	});
-
-//swipe to backend menu
-	$("#search").on('swipeleft',  function(){ 
-		if(Date.now()  - latest_swipe <1000){
-			//alert("2 left swipes -> Backdoor menu");
-			//$(".json-output").val(JSON.stringify(window.localStorage.getItem("memory")));
-			$("#memory").text(window.localStorage.getItem("memory").length);
-			$("#key").text(window.localStorage.getItem("key").length);
-			$("#memoryoutput").val(window.localStorage.getItem("memory"));
-			$(".page").hide();
-			$("#menu").show();
-		}
-		latest_swipe = Date.now();
-	});
-
-	
-	// .cancel-button
-   $(document).on('click', ".cancel-button", function() {
-     	if(view=="tree")	view_item(current.id);
-		else view_filter();
-    });
-	
-	// .delete-button
-   $(document).on('click', ".delete-button", function() {
-		id = $(".item-id").val();
-		if (confirm('Delete "'+itemList.get_item(id).title+'"?')==true) {
-      itemList.remove_item(id);
-		if(view=="tree")	view_item(current.id);
-		else view_filter();
-		}
-    });
-    
-    // .finish-button
-	$(document).on('click', ".finish-button", function() {
-         id = $(".item-id").val();
-         itemList.edit_from_form("#edit-item-form");
-         itemList.finish_item(id);
-			if(view=="tree")	view_item(current.id);
-			else view_filter();
-    });
-	
-
-	// .menu-button
-    $(document).on('click', ".menu-button", function() {
-        	$("#memory").text(window.localStorage.getItem("memory").length);
-			$("#key").text(window.localStorage.getItem("key").length);
-        	$(".page").hide();
-			$("#menu").show();
-    });
-	
-	
-	// .search-button
-	$(document).on('click', ".search-button", function() {
-		view_filter();
-    });
-
-	// .tree-button
-	$(document).on('click', ".tree-button", function() {
-		view_item(current.id);
-    });
-	
-	function view_item (id) {
-		view = "tree";
-		current = itemList.get_item(id);
+        <div class="subitem-left quick_edit_item">
+			<img class="prio-icon" src="img/prio{{prio}}.png"/>
+			 <div class="order" style="">{{order}}</div>
+            <!img class="type-icon" style="margin:4px 7px;" src="img/type{{type}}.png"/>
+			<!--div class="percent" style="background:{{status}}; color:grey;">{{percent}} %</div-->
+            <!--div class="category" style="">{{category}}</div-->
+            <!--span class="saldo" style="font-size: 8pt;">{{saldo}} {{unit}}</span><br/>
+			<!--img class="type-icon" style="margin:0;" src="img/size{{importance}}.png"/-->
+		</div>
 		
-		itemList.refresh(id);
-		$(".menu-title").html(current.title);
-		if(current.id == 0) $("#tree>.submenu>.back-button").hide(); 
-		else $("#tree>.submenu>.back-button").show();
-	
-		$(".page").hide();
-		$("#tree").show();
-	}
-	
-	//search
-    function view_filter(){
-        view = "filter";
-        
-        var query = $(".search").val();
-        var type = $(".type-filter").val();
-        
-        itemList.filtered(type, query); 
-        //$("#filtered>.subitem").show();
-        //if(query!="") $("#filtered>.subitem>.subitem-center>.title:not(:contains('"+query+"'))").parent().parent().hide();
-        //else $("#filtered>.subitem").show();
-        
-        $(".page").hide();
-		  $("#search").show();
-    }
-    
-	
+		<div class="subitem-center">
+			<div class="title" style="color:#666; font-size:14pt;margin-bottom:3px;">{{title}}</div>
+			<div class="next_action_div" style="float:left;">
+                <span style="color:#DDA;font-size:11px;">{{store}}</span>{{#price}}<span style="color:white;font-size:11px;">: {{price}} kr</span>{{/price}}
+                 
+				{{#notes}}<span class="notes">{{notes}}</span>{{/notes}}
+               
+			</div>
+            
+		</div><!-- end subitem-center -->
+		 
+		<div style="clear:both;"></div>
+		
+		<span class="item_id" style="display:none;">{{id}}</span>
+        <span class="logg" style="display:none;">{{logg}}</span>
+		
+	</div>
 </script>
+
+
+
+
+<script language="JavaScript" type="text/javascript" src="javascript/array_query.js"></script>
+<script language="JavaScript" type="text/javascript" src="controller.js"></script>
