@@ -1,202 +1,153 @@
-var itemList = {
-    itemArray: [], //lagrar projektdata
-	storageKey: "",
-
-	init : function(key) {     
-		this.storageKey = key;
-		this.itemArray = JSON.parse(window.localStorage.getItem(key));
-        //console.log(this.itemArray);
-        if(this.itemArray == undefined) itemList.exampledata();
-        else if(this.itemArray == null) itemList.exampledata();
-        //åtgärd(er) för att slippa filtrerings-crash
-        //console.log(this.itemArray.length);
-        for (var index = 0, len = this.itemArray.length; index < len; index++) {
-            item = this.itemArray[index];
-            this.set_calculated_values(item.id);
-        }
-        
-        window.localStorage.setItem(this.storageKey, JSON.stringify(this.itemArray));
-            
-	},
-	
-    set_calculated_values : function (id){
-        item = this.get_item(id);
-        //var weekDays = [ "?", "Mån", "Tis", "Ons", "Tor", "Fre", "Lör", "Sön"];
-        //åtgärder för undefined värden
-        //item.weekday =  weekDays[moment(item.finish_date,"YYYY-MM-DD").format("E")];
-        //item.week =  moment(item.finish_date,"YYYY-MM-DD").week();
-        //if(item.finish_date != undefined && item.finish_date != "" && item.price != undefined && item.price != "") item["sum"] =  (parseFloat(item.amount)*parseFloat(item.price)).toFixed(2); 
-    },
-
-     save_to_storage : function(item){
-    	window.localStorage.setItem(this.storageKey, JSON.stringify(this.itemArray));
-	},
-    /*
-    save_array : function() {   
-        window.localStorage.setItem(this.storageKey, JSON.stringify(this.itemArray)); 
-	},
-	*/
-    exampledata : function() {   
-        this.itemArray=[];
-        window.localStorage.setItem(this.storageKey, JSON.stringify(this.itemArray)); 
-    },
-
-	get_item : function(item_id){
-		return this.itemArray.filter(function (item){
-			return item.id == item_id;
-		})[0];
-	},
+// Carbon (Konstruktör)
+function Carbon(key){
+    this.itemArray = []; //lagrar projektdata
+    this.storageKey =  key;
     
-    get_all_items : function(){
-    	return this.itemArray;
-	},
-
-	
-	get_last_id : function(){
-		last_id = Math.max.apply(Math,this.itemArray.map(function(item){return item.id;}));
-		if (last_id=="-Infinity") last_id=0; //om inget objekt är skapat ännu
-		return last_id;
-	},
-	
-
-	add_item : function(item){
-		this.itemArray.push(item);
-		window.localStorage.setItem(this.storageKey, JSON.stringify(this.itemArray));
-	},
-	
-    remove_item : function(id){
-    	for(var i in this.itemArray){
-			if(this.itemArray[i].id==id){
-				this.itemArray.splice(i,1);
-				break;
-				}
-		}
-		window.localStorage.setItem(this.storageKey, JSON.stringify(this.itemArray));
-	},
-	
-    
-    set_item_field : function(id, field, value){
-        var weekDays = [ "?", "Mån", "Tis", "Ons", "Tor", "Fre", "Lör", "Sön"];
-        this.get_item(id)[field] = value;
-        this.get_item(id)["last_update"] = moment().format('YYYY-MM-DD HH:mm:ss');  
-        this.get_item(id)["weekday"] =  weekDays[moment(this.get_item(id)["finish_date"],"YYYY-MM-DD").format("E")];
-        this.set_calculated_values(id);
-        window.localStorage.setItem(this.storageKey, JSON.stringify(this.itemArray));
-	},
-    
-   
-	quick_add : function(title){
-	    
-        var item = {};
+    //ladda från local storage
+    var local_storage = window.localStorage.getItem(key);
         
-        item["title"] = title;
-        
-        //lägga till startdate till objektet
-    	item["start_date"] = moment().format('YYYY-MM-DD HH:mm:ss');
-        
-        //sätta last_update
-        item["last_update"] = moment().format('YYYY-MM-DD HH:mm:ss');
-        
-		//lägga till id till objektet
-		item["id"] = itemList.get_last_id()+1;
-        
-        item["amount"] = 1;
-        
-        item["status"] = "open";
-        
-        item["type"] = "grocery";
-        
-        //lägga till objekt i listan
-		this.add_item(item);
-    },
-    
-    copy : function(id){
-        
-        var item = {};
-        var item_to_copy = this.get_item(id);
-        
-        
-        //lägga till startdate till objektet
-    	item["start_date"] = moment().format('YYYY-MM-DD HH:mm:ss');
-        
-        //sätta last_update
-        item["last_update"] = moment().format('YYYY-MM-DD HH:mm:ss');
-        
-		//lägga till id till objektet
-		item["id"] = itemList.get_last_id()+1;
-        
-        item["status"] = "open";
-        item["amount"] = item_to_copy["amount"];
-        item["price"] = item_to_copy["price"];
-        item["title"] = item_to_copy["title"];
-        item["store"] = item_to_copy["store"];
-        item["notes"] = item_to_copy["notes"];
-        item["sum"] = item_to_copy["sum"];
-        
-        //lägga till objekt i listan
-		this.add_item(item);
-    },
-    
-    add_from_form : function(form_id){
-    	//skapa objekt av formdata
-		var temp = $( form_id ).serializeArray();
-		var item = {};
-		for(var i = 0; i <temp.length;i++){
-			temp2 = temp[i];
-			item[temp2["name"]] = temp2["value"];
-		}
-		
-		//lägga till startdate till objektet
-		item["start_date"] = moment().format('YYYY-MM-DD HH:mm:ss');
-        
-        //sätta last_update
-        item["last_update"] = moment().format('YYYY-MM-DD HH:mm:ss');
-        
-		//lägga till id till objektet
-		item["id"] = itemList.get_last_id()+1;
-        
-        //lägga till objekt i listan
-		this.add_item(item);
-        
-        //fixa veckodag, summa, etc
-        this.set_calculated_values(item.id);
-    
-	},
-    
-	edit_from_form : function(form_id){
-		
-        //skapa temporärt itemobjekt av formdata
-		var temp = $( form_id ).serializeArray();
-		var item_temp = {};
-		for(var i = 0; i <temp.length;i++){
-			temp2 = temp[i];
-			item_temp[temp2["name"]] = temp2["value"];
-		}
-        
-        
-        var item = this.get_item(item_temp.id);
-        
-        for (var key in item_temp) {
-            item[key] = item_temp[key];
-        }
-        
-        //sätta last_update
-        item["last_update"] = moment().format('YYYY-MM-DD HH:mm:ss');
-        
-        
-        //fixa veckodag, summa, etc
-        this.set_calculated_values(item.id);
-        
-		//ta bort finish date om datum inte är satt
-		//if (item_temp['finish_date'] == "") delete item_temp['finish_date'];
-        
-        //console.log(item_temp);
-        //console.log(item);
-        window.localStorage.setItem(this.storageKey, JSON.stringify(this.itemArray));
-	},
-
+    //om det finns värden i local storage 
+    if (local_storage) {
+        this.itemArray = JSON.parse(window.localStorage.getItem(key));
+    }
 }
+
+
+// get_all
+Carbon.prototype.get_all = function() {
+    return this.itemArray;
+    console.log("get_all");
+};
+
+
+// save
+Carbon.prototype.save = function() {
+    window.localStorage.setItem(this.storageKey, JSON.stringify(this.itemArray));
+};
+
+
+// add_item
+Carbon.prototype.add_item = function(item) {
+    item["id"] = this.last_id()+1;
+    item["start_date"] = moment().format('YYYY-MM-DD HH:mm:ss');
+    item["update_date"] = moment().format('YYYY-MM-DD HH:mm:ss');
+    
+    this.itemArray.push(item);
+    this.save();
+};
+
+
+Carbon.prototype.remove_item = function(id) {
+    for(var i in this.itemArray){
+		if(this.itemArray[i].id==id){
+            var parent_id = this.get_item(id).parent_id
+			this.itemArray.splice(i,1);
+            break;
+			}
+	}
+	window.localStorage.setItem(this.storageKey, JSON.stringify(this.itemArray));
+};
+
+
+// get_item
+Carbon.prototype.get_item = function(id) {
+	return this.itemArray.filter(function (item){
+		return item.id == id;
+	})[0];
+};
+
+  
+// last_id
+Carbon.prototype.last_id = function() {
+	last_id = Math.max.apply(Math,this.itemArray.map(function(item){return item.id;}));
+    if (last_id=="-Infinity") last_id=0; //om inget objekt är skapat ännu
+    return last_id;
+};
+
+// Clear all
+Carbon.prototype.clear = function() {
+    this.itemArray = []; //lagrar projektdata
+    this.save();
+};
+
+// Copy
+Carbon.prototype.copy = function(id) {
+    var item = JSON.parse(JSON.stringify(this.get_item(id)));
+    
+    item["start_date"] = moment().format('YYYY-MM-DD HH:mm:ss');
+    item["update_date"] = moment().format('YYYY-MM-DD HH:mm:ss');
+	item["id"] = this.last_id()+1;
+    
+	this.add_item(item);
+    return item;
+};
+
+
+// add from form
+Carbon.prototype.add_from_form = function(form_id) {
+	//skapa objekt av formdata
+    var form_object = $( form_id ).serializeObject();
+	this.add_item(form_object);
+    console.log("add_from_form");
+};
+	
+    
+// edit from form
+Carbon.prototype.edit_from_form = function(form_id) {
+    //skapa object från formulär
+    var form_object = $( form_id ).serializeObject();
+    // om item med detta id finns
+    if(this.get_item(form_object.id)){
+        var item = JSON.parse(JSON.stringify(this.get_item(form_object.id)));
+        
+        jQuery.extend(item, form_object);
+        
+        item["update_date"] = moment().format('YYYY-MM-DD HH:mm:ss');
+        
+        //byta ut objekt i listan
+    	this.remove_item(item.id);
+        this.itemArray.push(item);
+        this.save();
+        
+        return item;
+    }
+    else return false;
+};
+
+
+Carbon.prototype.set_item_field = function(id, field, value) {
+    for(var i in this.itemArray){
+		if(this.itemArray[i].id==id){
+			this.itemArray[i][field] = value;
+            break;
+	    }
+	}
+	this.save();
+};
+
+
+
+/* ******************************************************************/
+/* Serialize Object     http://jsfiddle.net/sxGtM/3/                */
+/********************************************************************/
+$.prototype.serializeObject = function()
+{
+    var o = {};
+    var a = this.serializeArray();
+    $.each(a, function() {
+        if (o[this.name] !== undefined) {
+            if (!o[this.name].push) {
+                o[this.name] = [o[this.name]];
+            }
+            o[this.name].push(this.value || '');
+        } else {
+            o[this.name] = this.value || '';
+        }
+    });
+    return o;
+};
 
 
 /*** Copyright 2013 Teun Duynstee Licensed under the Apache License, Version 2.0 ***/
 firstBy=(function(){function e(f){f.thenBy=t;return f}function t(y,x){x=this;return e(function(a,b){return x(a,b)||y(a,b)})}return e})();
+

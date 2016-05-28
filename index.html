@@ -15,12 +15,12 @@
 		
 		<script language="JavaScript" type="text/javascript" src="javascript/moment.min.js"></script>
 		<script language="JavaScript" type="text/javascript" src="javascript/mustache.js"></script>	
-		<script language="JavaScript" type="text/javascript" src="carbon.js"></script>
         <script language="JavaScript" type="text/javascript" src="javascript/array_query.js"></script>
 		<script language="JavaScript" type="text/javascript" src="javascript/jquery-2.1.3.min.js"></script> 
+        <script language="JavaScript" type="text/javascript" src="carbon.js"></script>
 		<script language="JavaScript" type="text/javascript" src="javascript/jquery.detect_swipe.js"></script> 
-        <script src="javascript/sortable.js"></script>
-        
+        <script src="http://rubaxa.github.io/Sortable/Sortable.js"></script>
+        <!--script src="javascript/sortable.js?1"></script-->
 	</head>
 	
 	<body>
@@ -31,7 +31,7 @@
 			  
 			<div class="header" style="font: 29px bold arial, sans-serif;">
 				
-                <img id="meals-button" src="img/food.png"  style="float:right; margin:5px; cursor:pointer;"/>
+                <!img id="meals-button" src="img/food.png"  style="float:right; margin:5px; cursor:pointer;"/>
 				
 			</div> <!--end header-->
 			
@@ -60,53 +60,11 @@
             
             <div id="finished_items"></div>
             
-	
 		</div><!-- end page-->
 		
         
-        
-        
-    
-        
-        <!--MEALS PAGE -------------->
-			<div id="meals" class="page" style="display:none;">
-			  
-			<div class="header" style="font: 29px bold arial, sans-serif;">
-				
-                <img id="groceries-button" src="img/groceries2.png"  style="float:right; margin:5px; cursor:pointer;"/>
-				
-			</div> <!--end header-->
-			
-			<!--Sub-meny-->
-			<div class="submenu">
-				
-                <!--button id="extra-controls-button" onclick="$('.extra-controls').toggle();" style="float:left;  margin-left:10px;">...</button-->
-                <!img  src="img/icon.png"  style="margin:5px;vertical-align: text-top; height:30px;"/>
-                
-                <! New button>
-				<button id="new-button" style="float:right;margin-left:10px;">New</button>
-    			
-                <!--Search input-->
-                <!input id="quick_search" onkeyup="//refresh_meals();" placeholder="Search/quick add" style="float:right;width:200px;border-radius:3px;"/>
-				
-			</div><!-- end controls-->
-            
-            <div class="extra-controls" style="display:none;">
-        		extra controls
-			</div><!-- end controls--> 
-			
-			<!-- ItemLista -->
-			<div id="meal_items"  class="list-group"></div>
-            <!--div style="margin:10px; color:#555;">Finished</div-->
-         
-	
-		</div><!-- end page-->
-		
-		
 
-        
-        
-		<!-- EDIT GROCERIES ---------------------------------------------------------------------->
+		<!-- EDIT ---------------------------------------------------------------------->
 		<div id="edit" class="page"  style="display:none;">
 			
 			<div class="header">
@@ -122,14 +80,15 @@
 			</div><!-- end controls--> 
             
 			<form id="edit-groceries-form">
-    				<input class="item-title" name="title" type="text" style="margin-bottom:5px;height:50px; font-size:1.3em"/><br/>
-                    <input class="item-refill-time" name="refill" type="text" style="margin-bottom:5px;height:50px; font-size:1.3em"/><br/>
-    			    <textarea class="item-notes" name="notes" rows="4" placeholder="Notes"></textarea>
+				<input class="item-title" name="title" type="text" style="margin-bottom:5px;height:50px; font-size:1.3em"/><br/>
+                <input class="item-refill-time" name="refill" type="text" style="margin-bottom:5px;height:50px; font-size:1.3em"/><br/>
+			    <textarea class="item-notes" name="notes" rows="4" placeholder="Notes"></textarea>
             
     			<center>
     				<button class="more-button" type='button'>More options</button>
     			</center>
-    			<div class="more" style="display:none;">
+    			
+                <div class="more" style="display:none;">
     				<span class="field-description">id:</span>
     				<input class="item-id" name="id" type="text" style="color:#CCC;"/> <br/>
         	        <span class="field-description">Status:</span>
@@ -140,110 +99,29 @@
                     <input class="finish_date_input" type="text" name="finish_date" />
                     <span class="field-description">Type:</span>
                     <input class="type_input" type="text" name="type" />
+                    
+                     <span class="field-description">History:</span>
+                    <div id="history_items"></div>
+                    
                 </div>
             
 			</form>
 		</div><!--edit-item-->
-        
-        
-        
-        
-        <!-- EDIT MEAL ---------------------------------------------------------------------->
-		<div id="edit-meal" class="page"  style="display:none;">
-			
-			<div class="header">
-				<div class="menu-title">-item-title-</div>
-			</div> <!--end header-->
-			
-			<!--Sub-meny-->
-			<div class="submenu">
-				<button class="cancel-button">Cancel</button>
-				<button class="save-button" style="width:70px; float:right;margin-left:5px;"><img src="img/save.png" /></button>
-				<button class="delete-button" style="width:70px; float:right;margin-left:5px;"><img src="img/delete2.png" /></button>
-				<br/><br/>
-			</div><!-- end controls--> 
-            
-			<form id="edit-meal-form">
-				<input class="item-title" name="title" type="text" style="margin-bottom:5px;height:50px; font-size:1.3em"/><br/>
-                <input class="item-prio" name="prio" type="text" style="margin-bottom:5px;height:50px; font-size:1.3em"/><br/>
-			    <textarea class="item-notes" name="notes" rows="4" placeholder="Notes"></textarea>
-        
-    			<center>
-    				<button class="more-button" type='button'>More options</button>
-    			</center>
-    			
-                <div class="more" style="display:none;">
-    				<span class="field-description">id:</span>
-    				<input class="item-id" name="id" type="text" readonly="readonly" style="color:#CCC;"/> <br/>
-        	        <span class="field-description">Status:</span>
-                    <input class="status" type="text" name="status" />
-                    <span class="field-description">Start Date:</span>
-                    <input class="start_date" type="text" name="start_date" />
-                    <span class="field-description">Finish Date:</span>
-                    <input class="finish_date_input" type="text" name="finish_date" />
-                    <span class="field-description">Type:</span>
-                    <input class="type_input" type="text" name="type" />
-                    <span class="field-description">Order:</span>
-                    <input class="order_input" type="order" name="type" />
-                </div>
-            
-			</form>
-		</div><!--edit-item-->
-        
-        
-            <!-- NEW item--------------------------------------------------------------------------->
-		<div id="new" class="page"  style="display:none;">
-			
-			<div class="header">
-    			<div class="menu-title">-New item-</div>
-			</div> <!--end header-->
-			
-			<!--Sub-meny-->
-			<div class="submenu">
-    			<button class="cancel-button">Cancel</button>
-				<!--button class="save-button" style="width:70px; float:right;margin-left:5px;"><img src="img/save.png" /></button-->
-				<button class="add-button" style="width:70px; float:right;margin-left:5px;">Add</button>
-				<br/><br/>
-			</div><!-- end controls--> 
-			
-			
-			
-			<form id="new-item-form">
-				<textarea  id="new-item-title" name="title" placeholder="Title" rows="1" autofocus style="margin-bottom:5px;height:50px; font-size:1.3em; padding-top: 11px;"></textarea><br/>
-				
-			    <!input id="new-item-date" type="date" name="date" min="1979-11-17" max="2025-12-31" />
-    			<!input type="text" name="order" id="new-order" />
-                <input type="text" name="prio" class="new-prio" placeholder="Prio"/>
-				<textarea id="new-item-notes" name="notes" placeholder="Notes" rows="10"></textarea>
-                
-                <!--hidden-->
-                <input type="hidden" name="type" value="meal"/>				
-			</form>
-			<br/><br/><br/><br/><br/><br/><br/>
-		</div><!-- end new-item--> 
-        
-        
         
 	</body>
 </html>
 
+
+
+<! ****************************************************************************>
+<! **** MUSTAGE TEMPLATES *****************************************************>
+<! ****************************************************************************>
+
+
 <!-- Mustache template open -->
 <script id="open_items_template" type="text/template">
 	<div class="subitem project">
-						
-		<div class="subitem-right" style="width:30px; float: right;  height:40px; padding:15px 20px 10px 20px;;">
-        	<img src="img/handle3.png"/>
-		</div>
-        
-        <!--div class="subitem-left quick_edit_item">
-			<!img class="prio-icon" src="img/prio{{prio}}.png"/>
-			<!img class="type-icon" style="margin:4px 7px;" src="img/type{{type}}.png"/>
-			<!--div class="percent" style="background:{{status}}; color:grey;">{{percent}} %</div-->
-            <!--div class="category" style="">{{category}}</div-->
-            <!--span class="saldo" style="font-size: 8pt;">{{saldo}} {{unit}}</span><br/>
-			<!--img class="type-icon" style="margin:0;" src="img/size{{importance}}.png"/-->
-		</div-->
-		
+        	
 		<div class="subitem-center">
 			<div class="title">{{title}}</div>
 			<div class="next_action_div" style="float:left;">
@@ -295,46 +173,15 @@
 </script>	
 
 
-
-
-<script id="meals_items_template" type="text/template">
-    <div class="subitem meal">
-    					
-		 <div class="subitem-right" style="width:30px; float: right;  height:40px; padding:15px 20px 10px 20px;;">
-        	<img src="img/handle3.png"/>
-		</div>
-        
-        <div class="subitem-left quick_edit_item">
-			<img class="prio-icon" src="img/prio{{prio}}.png"/>
-			 <div class="order" style="">{{order}}</div>
-            <!img class="type-icon" style="margin:4px 7px;" src="img/type{{type}}.png"/>
-			<!--div class="percent" style="background:{{status}}; color:grey;">{{percent}} %</div-->
-            <!--div class="category" style="">{{category}}</div-->
-            <!--span class="saldo" style="font-size: 8pt;">{{saldo}} {{unit}}</span><br/>
-			<!--img class="type-icon" style="margin:0;" src="img/size{{importance}}.png"/-->
-		</div>
-		
-		<div class="subitem-center">
-			<div class="title" style="color:#666; font-size:14pt;margin-bottom:3px;">{{title}}</div>
-			<div class="next_action_div" style="float:left;">
-                <span style="color:#DDA;font-size:11px;">{{store}}</span>{{#price}}<span style="color:white;font-size:11px;">: {{price}} kr</span>{{/price}}
-                 
-				{{#notes}}<span class="notes">{{notes}}</span>{{/notes}}
-               
-			</div>
-            
-		</div><!-- end subitem-center -->
-		 
-		<div style="clear:both;"></div>
-		
-		<span class="item_id" style="display:none;">{{id}}</span>
-        <span class="logg" style="display:none;">{{logg}}</span>
-		
+<!-- Mustache template history -->
+<script id="history_items_template" type="text/template">
+    <div class="history item">
+			<span style="color:#555;">{{title}}</span>
+            <span style="color:#555;">{{finish_date}}</span>
+            <br>
 	</div>
-</script>
-
-
-
+</script>	
 
 <script language="JavaScript" type="text/javascript" src="javascript/array_query.js"></script>
 <script language="JavaScript" type="text/javascript" src="controller.js"></script>
+
