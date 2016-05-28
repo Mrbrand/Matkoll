@@ -177,7 +177,7 @@ function refresh_groceries(){
 	);
 
     finished_items.sort(
-        firstBy(function (v1, v2) { return v1.finish_date>v2.finish_date ? -1 : v1.finish_date<v2.finish_date ? 1 : 0;}) 
+        firstBy(function (v1, v2) { return v1.days_left<v2.days_left ? -1 : v1.days_left>v2.days_left ? 1 : 0;}) 
     );
 
 
@@ -194,10 +194,10 @@ function refresh_groceries(){
     $("#finished_items").empty();    
   	finished_items.forEach(function(item) {
         item.days_ago = parseInt((moment()-moment(item.finish_date))/3600/1000/24);
+        item.days_left = parseInt(item.refill) - item.days_ago;
         var template = $('#finished_items_template').html();
 		var html = Mustache.to_html(template, item);
 		$("#finished_items").append(html);
-       
 	});
 	
   	//om inga items hittas
