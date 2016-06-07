@@ -214,8 +214,7 @@ $(document).on('click', ".pref-button", function(){
 $(document).on('click', "#import-button", function() {
     if (confirm('All current data will be deleted?')==true) {
         window.localStorage.setItem(itemList.storageKey, $('#import').val());
-        itemList.init("wiseguy_items");
-        view_item(0);
+       	refresh_groceries();
     }
 });
  
