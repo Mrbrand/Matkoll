@@ -29,10 +29,9 @@
 		<!--GROCERIES PAGE-------------->
 			<div id="search" class="page" style="display:block;">
 			  
-			<div class="header" style="font: 29px bold arial, sans-serif;">
-				
+			<div class="header" style="font: 29px bold arial, sans-serif;">	
                 <!img id="meals-button" src="img/food.png"  style="float:right; margin:5px; cursor:pointer;"/>
-				
+				<img class="pref-button" src="img/gear.png"  style="float:right; margin:5px; cursor:pointer;"/>
 			</div> <!--end header-->
 			
 			<!--Sub-meny-->
@@ -107,6 +106,30 @@
             
 			</form>
 		</div><!--edit-item-->
+        
+        <!MENU >
+		<div id="menu" class="page">
+			
+            <div class="header">
+    			<div style="float:left;">Preferences</div>
+			</div> <!--end header-->
+			
+			<!--Sub-meny-->
+			<div class="submenu">
+				<button class="cancel-button">Back</button>
+                 <!--button onclick="save_preferences();" style="float:right;">Save</button-->
+			</div><!-- end controls-->
+        
+           	<button id="export-button">Export All</button><br/><br/>
+           	<textarea id="import" style="width:270px;" /></textarea><br/>
+           	<button id="import-button">Import</button>
+           
+		</div><!-- end menu--> 
+		
+		<!EXPORT>
+    	<div id="export" class="page">
+			
+		</div><!-- end EXPORt--> 
         
 	</body>
 </html>

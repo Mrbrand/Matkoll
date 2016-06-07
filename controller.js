@@ -170,7 +170,6 @@ function refresh_groceries(){
     //finished_items=finished_items.query("prio", "==", undefined);
     finished_items=finished_items.query("title", "contains", query);
     
-    
     //sortera fltered items
     open_items.sort(
         firstBy(function (v1, v2) { return v1.notes<v2.notes ? -1 : v1.notes>v2.notes ? 1 : 0;}) 
@@ -180,7 +179,6 @@ function refresh_groceries(){
         firstBy(function (v1, v2) { return v1.days_left<v2.days_left ? -1 : v1.days_left>v2.days_left ? 1 : 0;}) 
     );
 
-
   	//mustache output
    	$("#open_items").empty();    
   	open_items.forEach(function(item) {
@@ -189,7 +187,6 @@ function refresh_groceries(){
 		$("#open_items").append(html);
 	});
 	
-    
     //mustache output
     $("#finished_items").empty();    
   	finished_items.forEach(function(item) {
@@ -206,5 +203,31 @@ function refresh_groceries(){
     $(".page").hide();
 	$("#search").show();
 }
+
+// gear button (preferences)
+$(document).on('click', ".pref-button", function(){  
+        $(".page").hide();
+		$("#menu").show();
+});
+
+// #import-button
+$(document).on('click', "#import-button", function() {
+    if (confirm('All current data will be deleted?')==true) {
+        window.localStorage.setItem(itemList.storageKey, $('#import').val());
+        itemList.init("wiseguy_items");
+        view_item(0);
+    }
+});
+ 
+// #export all-button
+$(document).on('click', "#export-button", function() {
+    var items = itemList.get_all();
+    var items_string = JSON.stringify(items);
+    console.log(items);
+    console.log(items_string);
+    $("#export").html(items_string);
+    $(".page").hide();
+    $("#export").show();
+});
 
 
