@@ -3,7 +3,7 @@ var itemHistory = new Carbon("mangajo-history");
 refresh_groceries();
 
 
-// .subitem-left (visa edit-läge)
+// EDIT .subitem-center .title
 $(document).on('click', ".subitem-center .title", function() {
 	
 	id = $(this).parent().parent().find(".item_id").text();
@@ -121,8 +121,6 @@ $(document).on('click', "#increase", function() {
 $(document).on('click', "#decrease", function() {
     var item_id = $(this).parent().parent().find(".item_id").html();
     amount = parseInt(itemList.get_item(item_id).amount);
- 
-    
     if (amount == undefined) itemList.set_item_field(item_id, "amount", 0);
     amount = amount - 1;
     if (amount > 0) itemList.set_item_field(item_id, "amount", amount);
@@ -135,7 +133,7 @@ $(document).on('click', "#decrease", function() {
 $(document).on('click', "#tolist", function() {
     var item_id = $(this).parent().parent().find(".item_id").html();
     itemList.set_item_field(item_id, "status",  "open");
-    if($('#quick_search').val().length > 0){    
+   	if($('#quick_search').val().length > 0){    
         $('#quick_search').val("");
         $("#quick_search").focus();  
     }
@@ -148,9 +146,13 @@ $(document).on('click', "#tolist", function() {
 // #purchase
 $(document).on('click', "#purchase", function() {
     var item_id = $(this).parent().parent().find(".item_id").html();
+    var item = itemList.get_item(item_id);
+
     itemList.set_item_field(item_id, "finish_date",  moment().format('YYYY-MM-DD HH:mm:ss'));
     itemList.set_item_field(item_id, "status",  "finished");
-    itemHistory.add_item(itemList.get_item(item_id));
+        
+    itemHistory.add_item({title: item.title, finish_date: moment().format('YYYY-MM-DD HH:mm:ss')});
+    
     refresh_groceries();
 });
 
@@ -215,6 +217,7 @@ $(document).on('click', "#import-button", function() {
     if (confirm('All current data will be deleted?')==true) {
         window.localStorage.setItem(itemList.storageKey, $('#import').val());
        	refresh_groceries();
+       	refresh_groceries();
     }
 });
  
@@ -222,11 +225,16 @@ $(document).on('click', "#import-button", function() {
 $(document).on('click', "#export-button", function() {
     var items = itemList.get_all();
     var items_string = JSON.stringify(items);
-    console.log(items);
-    console.log(items_string);
     $("#export").html(items_string);
     $(".page").hide();
     $("#export").show();
 });
+
+
+// #clear history
+$(document).on('click', "#clear-history-button", function() {
+ 	window.localStorage.setItem(itemHistory.storageKey, "[]");
+});
+
 
 

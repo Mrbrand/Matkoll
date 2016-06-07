@@ -36,7 +36,7 @@ Carbon.prototype.add_item = function(item) {
     this.save();
 };
 
-
+//remove_item
 Carbon.prototype.remove_item = function(id) {
     for(var i in this.itemArray){
 		if(this.itemArray[i].id==id){
