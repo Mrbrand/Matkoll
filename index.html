@@ -26,11 +26,10 @@
 	<body>
 	
 		
-		<!--GROCERIES PAGE-------------->
+		<!--LIST -------------->
 			<div id="search" class="page" style="display:block;">
 			  
 			<div class="header" style="font: 29px bold arial, sans-serif;">	
-                <!img id="meals-button" src="img/food.png"  style="float:right; margin:5px; cursor:pointer;"/>
 				<img class="pref-button" src="img/gear.png"  style="float:right; margin:5px; cursor:pointer;"/>
 			</div> <!--end header-->
 			
@@ -40,11 +39,17 @@
                 <!--button id="extra-controls-button" onclick="$('.extra-controls').toggle();" style="float:left;  margin-left:10px;">...</button-->
                 <!img  src="img/icon.png"  style="margin:5px;vertical-align: text-top; height:30px;"/>
                 
+                <select id="sortby" style="width:150px; float:left;">
+                	<option value="history">Sort by</option>
+                	<option value="history">Purchase count</option>
+                	<option value="date">Finish Date</option>
+            	</select>
+            	
                 <! New button>
 				<button id="quick_add" style="float:right;margin-left:10px;">Add</button>
     			
                 <!--Search input-->
-                <input id="quick_search" onkeyup="refresh_groceries();" placeholder="Search/quick add" style="float:right;width:200px;border-radius:3px;"/>
+                <input id="quick_search" onkeyup="refresh_groceries();" placeholder="Search/quick add" style="float:right;width:100px;border-radius:3px;"/>
 				
                
 			</div><!-- end controls-->
@@ -181,13 +186,13 @@
 		<div class="subitem-center">
 			<div class="title"  style="color:#DDD;">{{title}}</div>
 			<div class="next_action_div" style="float:left;">
-    			<span style="font-size: 12px; color:#DDA;text-align: center;"> {{days_left}}</span>
-                <span style="font-size: 12px; color:#AAA;"> days to refill, </span>
-                <span style="font-size: 12px; color:#DDA;text-align: center;"> {{days_ago}}</span>
-                <span style="font-size: 12px; color:#AAA;">/ </span>
-                <span style="font-size: 12px; color:#DDA;text-align: center;"> {{refill}}</span>
-                <span style="font-size: 12px; color:#AAA;"> refill time</span>
-                
+    			<span style="font-size: 12px; color:#AAA;">Purchased</span>
+    			<span style="font-size: 12px; color:#DDA;text-align: center;"> {{history}}</span>
+    			<span style="font-size: 12px; color:#AAA;"> times </span> <br>
+    			
+    			<span style="font-size: 12px; color:#AAA;">Last</span>
+    			<span style="font-size: 12px; color:#DDA;text-align: center;"> {{days_ago}}</span>
+    			<span style="font-size: 12px; color:#AAA;"> days ago</span>   
 			</div>
             <button id="tolist" style="float:right;margin-right:5px;width:70px; "><img src="img/cart.png" /></button>
 
@@ -208,6 +213,7 @@
     <div class="history item">
 			<span style="color:#555;">{{title}}</span>
             <span style="color:#555;">{{finish_date}}</span>
+            <span style="color:#555;">({{amount}})</span>
             <br>
 	</div>
 </script>	

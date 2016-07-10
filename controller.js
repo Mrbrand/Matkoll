@@ -16,10 +16,10 @@ $(document).on('click', ".subitem-center .title", function() {
     }
     
     history_items=itemHistory.get_all();
-    console.log(history_items);
-    
     history_items=history_items.query("title", "==", edit_item.title);
-    console.log(history_items);
+    history_items.sort(
+        firstBy(function (v1, v2) { return v2.finish_date<v1.finish_date ? -1 : v2.finish_date>v1.finish_date ? 1 : 0;}) 
+    );
     
     $("#history_items").empty();    
       history_items.forEach(function(item) {
@@ -42,7 +42,7 @@ $(document).on('click', ".subitem-center .title", function() {
 $(document).on('click', "#quick_add", function() {
     if ($('#quick_search').val() != ""){
         var title = $('#quick_search').val();
-        var item = {title: title, status: "open", type: "grocery"};
+        var item = {title: title, status: "open", amount: 0,  history: 0};
         itemList.add_item(item);
         $('#quick_search').val("");
         refresh_groceries();
@@ -59,13 +59,17 @@ $("#quick_search").keyup(function(event){
     }
 });
 
+//Sort by
+$(document).on('change', "#sortby", function() {
+ 	refresh_groceries();
+});
 
 // .save-button
 $(document).on('click', ".save-button", function() {
     
     itemList.edit_from_form("#edit-groceries-form");
     refresh_groceries();
-
+    
     //var scroll_offset = $(".item_id:contains('"+id+"')").parent().offset().top-100;
     //window.scrollTo(0, scroll_offset);
 });
@@ -75,14 +79,6 @@ $(document).on('click', ".save-button", function() {
 $(document).on('click', ".more-button", function() {
 	$('.more').show();
 	$('.more-button').hide();
-});
-
-
-// .groceries-button
-$(document).on('click', "#groceries-button", function() {
-    $(".page").hide();
-    $("#search").show();
-    refresh_groceries();
 });
  
  
@@ -148,10 +144,16 @@ $(document).on('click', "#purchase", function() {
     var item_id = $(this).parent().parent().find(".item_id").html();
     var item = itemList.get_item(item_id);
 
+    itemHistory.add_item({title: item.title, amount: item.amount, finish_date: moment().format('YYYY-MM-DD HH:mm:ss') });
+    
+    history_items=itemHistory.get_all();
+    history_items=history_items.query("title", "==", item.title);
+    history_count = history_items.length;
+    
+    itemList.set_item_field(item_id, "history", history_count);
     itemList.set_item_field(item_id, "finish_date",  moment().format('YYYY-MM-DD HH:mm:ss'));
     itemList.set_item_field(item_id, "status",  "finished");
-        
-    itemHistory.add_item({title: item.title, finish_date: moment().format('YYYY-MM-DD HH:mm:ss')});
+    
     
     refresh_groceries();
 });
@@ -161,6 +163,7 @@ $(document).on('click', "#purchase", function() {
 function refresh_groceries(){
   
     var query = $("#quick_search").val();
+    var sortby = $("#sortby").val();
     
     open_items=itemList.get_all();
     open_items=open_items.query("status", "==", "open"); 
@@ -176,11 +179,18 @@ function refresh_groceries(){
     open_items.sort(
         firstBy(function (v1, v2) { return v1.notes<v2.notes ? -1 : v1.notes>v2.notes ? 1 : 0;}) 
 	);
-
-    finished_items.sort(
-        firstBy(function (v1, v2) { return v1.days_left<v2.days_left ? -1 : v1.days_left>v2.days_left ? 1 : 0;}) 
-    );
-
+	
+	if(sortby=="date"){ 
+		finished_items.sort(
+		    firstBy(function (v1, v2) { return v2.finish_date<v1.finish_date ? -1 : v2.finish_date>v1.finish_date ? 1 : 0;}) 
+		);
+	}
+	else{
+		finished_items.sort(
+		    firstBy(function (v1, v2) { return v2.history<v1.history ? -1 : v2.history>v1.history ? 1 : 0;}) 
+		);
+	}
+	
   	//mustache output
    	$("#open_items").empty();    
   	open_items.forEach(function(item) {
