@@ -40,7 +40,7 @@
                 <!img  src="img/icon.png"  style="margin:5px;vertical-align: text-top; height:30px;"/>
                 
                 <select id="sortby" style="width:150px; float:left;">
-                	<option value="history">Sort by</option>
+                	<option value="date">Sort by</option>
                 	<option value="history">Purchase count</option>
                 	<option value="date">Finish Date</option>
             	</select>
@@ -157,11 +157,13 @@
 			<div class="next_action_div" style="float:left;">
 				{{#notes}}<span class="notes">{{notes}}</span>{{/notes}}
 			</div>
-            <button id="purchase" style="float:right;margin-right:5px;width:70px; "><img src="img/finish.gif"></button>
+            <button class="purchase" style="float:right;margin-right:5px;width:70px; "><img src="img/finish.gif"></button>
             
-            <button id="increase" style="float:right;margin-right:5px;">+</button>
+            <button class="increase" style="float:right;margin-right:5px;">+</button>
             <div style="float:right; padding:3px; font-size:15pt;">{{amount}}</div>
-            <button id="decrease" style="float:right;margin-right:5px;">-</button>
+            <button class="decrease" style="float:right;margin-right:5px;">-</button>
+            
+            <button class="unlist" style="width:70px; float:right;margin-right:5px;"><img src="img/delete.png" /></button>
 		</div><!-- end subitem-center -->
 		 
 		<div style="clear:both;"></div>
@@ -186,15 +188,17 @@
 		<div class="subitem-center">
 			<div class="title"  style="color:#DDD;">{{title}}</div>
 			<div class="next_action_div" style="float:left;">
+    			<span style="font-size: 12px; color:#DDA;text-align: center;">{{amount}} </span>
+    			<span style="font-size: 12px; color:#AAA;">pcs</span>
+    			<span style="font-size: 12px; color:#DDA;text-align: center;"> {{days_ago}}</span>
+    			<span style="font-size: 12px; color:#AAA;"> days ago</span>   <br>
+    			
     			<span style="font-size: 12px; color:#AAA;">Purchased</span>
     			<span style="font-size: 12px; color:#DDA;text-align: center;"> {{history}}</span>
-    			<span style="font-size: 12px; color:#AAA;"> times </span> <br>
+    			<span style="font-size: 12px; color:#AAA;"> times </span> 
     			
-    			<span style="font-size: 12px; color:#AAA;">Last</span>
-    			<span style="font-size: 12px; color:#DDA;text-align: center;"> {{days_ago}}</span>
-    			<span style="font-size: 12px; color:#AAA;"> days ago</span>   
 			</div>
-            <button id="tolist" style="float:right;margin-right:5px;width:70px; "><img src="img/cart.png" /></button>
+            <button class="tolist" style="float:right;margin-right:5px;width:70px; "><img src="img/cart.png" /></button>
 
 		</div><!-- end subitem-center -->
 		 

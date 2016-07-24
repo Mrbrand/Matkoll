@@ -2,6 +2,14 @@ var itemList = new Carbon("mangajo");
 var itemHistory = new Carbon("mangajo-history");
 refresh_groceries();
 
+items=itemList.get_all();
+items.forEach(function(item) {
+	history_items=itemHistory.get_all();
+   	history_items=history_items.query("title", "==", item.title);
+   	history_count = history_items.length;
+   	item.history =  history_count;
+ });
+    
 
 // EDIT .subitem-center .title
 $(document).on('click', ".subitem-center .title", function() {
@@ -103,8 +111,8 @@ $(document).on('click', ".delete-button", function() {
 });
 
 
-// #increase
-$(document).on('click', "#increase", function() {
+// .increase
+$(document).on('click', ".increase", function() {
     var item_id = $(this).parent().parent().find(".item_id").html();
     amount = parseInt(itemList.get_item(item_id).amount);
     amount = amount + 1;
@@ -112,9 +120,18 @@ $(document).on('click', "#increase", function() {
     refresh_groceries();
 });
 
+// .unlist
+$(document).on('click', ".unlist", function() {
+    var item_id = $(this).parent().parent().find(".item_id").html();
+    itemList.set_item_field(item_id, "finish_date", "");
+     itemList.set_item_field(item_id, "status", "finished");
+	console.log("hej");
+    refresh_groceries();
+});
 
-// #decrease
-$(document).on('click', "#decrease", function() {
+
+// .decrease
+$(document).on('click', ".decrease", function() {
     var item_id = $(this).parent().parent().find(".item_id").html();
     amount = parseInt(itemList.get_item(item_id).amount);
     if (amount == undefined) itemList.set_item_field(item_id, "amount", 0);
@@ -126,7 +143,7 @@ $(document).on('click', "#decrease", function() {
 
 
 // #tolist
-$(document).on('click', "#tolist", function() {
+$(document).on('click', ".tolist", function() {
     var item_id = $(this).parent().parent().find(".item_id").html();
     itemList.set_item_field(item_id, "status",  "open");
    	if($('#quick_search').val().length > 0){    
@@ -140,7 +157,7 @@ $(document).on('click', "#tolist", function() {
 
 
 // #purchase
-$(document).on('click', "#purchase", function() {
+$(document).on('click', ".purchase", function() {
     var item_id = $(this).parent().parent().find(".item_id").html();
     var item = itemList.get_item(item_id);
 
