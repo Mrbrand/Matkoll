@@ -123,7 +123,6 @@ $(document).on('click', ".increase", function() {
 // .unlist
 $(document).on('click', ".unlist", function() {
     var item_id = $(this).parent().parent().find(".item_id").html();
-    itemList.set_item_field(item_id, "finish_date", "");
      itemList.set_item_field(item_id, "status", "finished");
 	console.log("hej");
     refresh_groceries();
